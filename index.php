@@ -2,12 +2,13 @@
     <head>
         <link rel="stylesheet" href="assets/style/index.css" type="text/css">
         <script src="assets/scripts/index.js"></script>
+        <script src="assets/scripts/settings.js" defer></script>
     </head>
     <body>
         <noscript>This page relies on JavaScript to run. Please enable JavaScript before using this.</noscript>
         <h2>Furnishing Sets</h2>
 
-        <a href="settings.php"><img id="settings" src="/assets/img/cog.png"></a>
+        <a href="settings"><img id="settings" src="/assets/img/cog.png"></a>
         <div id="sets">
             <?php
                 $sets = json_decode(file_get_contents('https://api.ambr.top/v2/en/furnitureSuite'));
@@ -39,7 +40,7 @@
                     }
 
                     $types = camelCaseArr($set -> types ?: array());
-                    $categories = camelCaseArr($set -> categories ?: array("hidden"));
+                    $categories = camelCaseArr($set -> categories ?: array("hiddenSet"));
                     $name = $set -> name ?: $id;
 
                     $icon = $set -> icon ?: '';
@@ -66,6 +67,7 @@
                         if (file_exists("data/pieces/$pieceId.json")){
                             $data = json_decode(file_get_contents("data/pieces/$pieceId.json"));
                             $pieceData = $data -> data;
+                            echo "<script>window.recipes[$pieceId] = " . json_encode($pieceData -> recipe) . "</script>";
                         } else echo $pieceId;
                         
                         $name = isset($pieceData -> name) ? $pieceData -> name : $pieceId;
@@ -73,8 +75,8 @@
                         $pieceIconRoute = "https://api.ambr.top/assets/UI/furniture/$pieceIcon.png";
                         $quantity = 5;
 
-                        echo "<div title=\"$name\" oncontextmenu=\"copy('$name'); return false;\" class=\"piece pieceSet$id furnishing$pieceId\" onclick=\"updatePrompt('$pieceId', '$pieceIconRoute', '$name')\" 
-                            data-pieceid=\"$pieceId\" data-quantity=\"$quantity\" data-icon=\"$pieceIconRoute\" data-piecename=\"$name\">
+                        echo "<div title=\"" . str_replace('"', '&quot;', $name) . "\" oncontextmenu=\"copy('" . str_replace("'", "\\'", str_replace('"', '&quot;', $name)) . "'); return false;\" class=\"piece pieceSet$id furnishing$pieceId\" onclick=\"updatePrompt('$pieceId', '$pieceIconRoute', '" . str_replace("'", "\\'", str_replace('"', '&quot;', $name)) . "')\" 
+                            data-pieceid=\"$pieceId\" data-quantity=\"$quantity\" data-icon=\"$pieceIconRoute\" data-piecename=\"" . str_replace('"', '&quot;', $name) . "\">
                             <img class=\"checkmark\" src=\"/assets/img/check.png\">
                             <img src=\"$pieceIconRoute\" alt=\"$pieceId\">
                             <p class=\"quantity\">$quantity</p>
@@ -109,6 +111,6 @@
         <h2>Materials</h2>
         <div id="materials"></div>
 
-        <h6 id="credit">This website is powered by the <a href="https://ambr.top/">ambr.top</a> API. This project is open-source on <a href="#">GitHub</a>.</h6>
+        <h6 id="credit">This website is powered by the <a href="https://ambr.top/">ambr.top</a> API. This project is open-source on <a href="https://github.com/a-bakedpotato/furnishing-tracker">GitHub</a>.</h6>
     </body>
 </html>

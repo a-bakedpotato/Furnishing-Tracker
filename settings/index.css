@@ -1,0 +1,23 @@
+#chars {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 5%;
+    padding-right: 5%;
+    justify-content: center;
+}
+
+.char {
+    margin: 1%;
+}
+
+.char.disabled {
+    opacity: 0.4;
+}
+
+body {
+    user-select: none;
+}
+
+.hidden { 
+    display: none !important;
+}

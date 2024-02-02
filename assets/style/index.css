@@ -35,10 +35,6 @@ a {
     bottom: 0;
 }
 
-.hidden, .set {
-    display: none;
-}
-
 .char > img, .piece > img {
     max-height: 50px;
     max-width: 50px;
@@ -72,7 +68,12 @@ a {
     margin-right: 1px;
 }
 
-.pieces {
+#furnishings, #materials {
+    width: 90%;
+    margin: auto;
+}
+
+.pieces, #furnishings, #materials {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -201,4 +202,42 @@ div:not(.check) > img.checkmark {
     transform: scale(1.1, 1.1) rotate(180deg);
     transition: 0.5s;
     filter: drop-shadow(-4px -4px #252525);
+}
+
+label {
+    display: inline;
+}
+
+input[type="checkbox"] {
+    opacity: 0;
+    position: absolute;
+    z-index: 5;
+}
+
+input[type="checkbox"] + label {
+    border: none;
+    outline: none;
+    background-color: #222222;
+    color: #FFFFFF;
+    padding: 9px;
+    border-radius: 3px;
+    display: inline-block;
+    position: relative;
+}
+
+input[type="checkbox"]:checked + label:after {
+    content: '\2714';
+    font-size: 14px;
+    position: absolute;
+    top: 0px;
+    left: 3px;
+    color: #FFFFFF;
+}
+
+.hidden, .hiddenSet {
+    display: none;
+}
+
+#furnishings > .piece, #materials > .piece {
+    margin: 0;
 }
