@@ -1,6 +1,8 @@
 <html>
     <head>
+        <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="assets/style/index.css" type="text/css">
+
         <script src="assets/scripts/index.js"></script>
         <script src="assets/scripts/settings.js" defer></script>
     </head>

@@ -2,6 +2,7 @@ body {
     color: #FFFFFF;
     background-color: #333333;
     text-align: center;
+    font-family: Lato, sans-serif;
 }
 
 a {
@@ -22,7 +23,7 @@ a {
 }
 
 .furnishingSet > h2 {
-    font-size: 12px;
+    font-size: 18px;
     flex-grow: 1;
 }
 
