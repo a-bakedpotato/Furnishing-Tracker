@@ -130,9 +130,7 @@ function updateFurnishings(){
 function craft(itemId, recipe, quantity){
 	const inventory = JSON.parse(localStorage.getItem('inventory') || '{}');
 
-	console.log(recipe.input);
 	for (const id in recipe.input){
-		console.log(id);
 		const itemAmt = (inventory[id] || 0) - quantity * recipe.input[id].count;
 		updateInv(id, itemAmt);
 	}
@@ -176,7 +174,6 @@ function updatePrompt(pieceId, iconRoute, name, isMaterial = false){
 			const div = document.createElement('div');
 
 			const img = document.createElement('img');
-			console.log(recipe.input[id].icon);
 			img.src = 'https://api.ambr.top/assets/UI/' + recipe.input[id].icon + '.png';
 			img.title = window.materialNames[id].name;
 			div.appendChild(img);
