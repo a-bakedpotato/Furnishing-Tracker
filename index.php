@@ -8,7 +8,6 @@
     </head>
     <body>
         <noscript>This page relies on JavaScript to run. Please enable JavaScript before using this.</noscript>
-        <h1>This website is still in development and is not yet accurate to in-game furnishing sets.</h1>
         <h2>Furnishing Sets</h2>
 
         <a href="settings"><img id="settings" src="/assets/img/cog.png"></a>
@@ -136,6 +135,6 @@
         <h2>Materials</h2>
         <div id="materials"></div>
 
-        <h6 id="credit">This website is powered by the <a href="https://ambr.top/">ambr.top</a> API. This project is open-source on <a href="https://github.com/a-bakedpotato/furnishing-tracker">GitHub</a>.</h6>
+        <h6 id="credit">This website is powered by the <a href="https://ambr.top/">ambr.top</a> API. This project is open-source on <a href="https://github.com/a-bakedpotato/furnishing-tracker">GitHub</a>. If you find any bugs or have any feedback, please contact me on <a href="https://discord.gg/9TVJAht">Discord</a>.</h6>
     </body>
 </html>
