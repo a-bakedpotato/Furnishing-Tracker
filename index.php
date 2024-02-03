@@ -6,13 +6,22 @@
     </head>
     <body>
         <noscript>This page relies on JavaScript to run. Please enable JavaScript before using this.</noscript>
+        <h1>This website is still in development and is not yet accurate to in-game furnishing sets.</h1>
         <h2>Furnishing Sets</h2>
 
         <a href="settings"><img id="settings" src="/assets/img/cog.png"></a>
         <div id="sets">
             <?php
                 $sets = json_decode(file_get_contents('https://api.ambr.top/v2/en/furnitureSuite'));
-                $furniture = json_decode(file_get_contents('https://api.ambr.top/v2/en/furniture'));
+                $characters = json_decode(file_get_contents('https://api.ambr.top/v2/en/avatar'));
+                $materials = json_decode(file_get_contents('https://api.ambr.top/v2/en/material'));
+
+                $materialNames = array();
+                foreach ($materials -> data -> items as $id => $matData){
+                    $materialNames[$id] = array('name' => $matData -> name, 'rank' => $matData -> rank);
+                }
+
+                echo "<script>window.materialNames = " . json_encode($materialNames) . "</script>";
 
                 function camelCase($str){
                     $words = explode(' ', $str);
@@ -46,7 +55,7 @@
                     $icon = $set -> icon ?: '';
                     $route = "https://api.ambr.top/assets/UI/furnitureSuite/$icon.png";
 
-                    echo '<div class="furnishingSet ' . implode(' ', array_merge($types, $categories)) . ' set' . $id . '" data-setid="' . $id . '">';
+                    echo '<div class="hidden furnishingSet ' . implode(' ', array_merge($types, $categories)) . ' set' . $id . '" data-setid="' . $id . '">';
 
                     echo "<img class=\"icon\" src=\"$route\" alt=\"$name\"><br>";
                     echo "<h2>$name</h2>";
@@ -67,16 +76,27 @@
                         if (file_exists("data/pieces/$pieceId.json")){
                             $data = json_decode(file_get_contents("data/pieces/$pieceId.json"));
                             $pieceData = $data -> data;
+
+                            if (!isset($pieceData -> recipe)) $pieceData -> recipe = array('input' => array('204' => array('icon' => 'UI_ItemIcon_204', 'count' => 40 * ($pieceData -> rank - 1))));
+
                             echo "<script>window.recipes[$pieceId] = " . json_encode($pieceData -> recipe) . "</script>";
                         } else echo $pieceId;
                         
                         $name = isset($pieceData -> name) ? $pieceData -> name : $pieceId;
                         $pieceIcon = isset($pieceData -> icon) ? $pieceData -> icon : '';
                         $pieceIconRoute = "https://api.ambr.top/assets/UI/furniture/$pieceIcon.png";
+                        $rank = isset($pieceData -> rank) ? $pieceData -> rank : 1;
                         $quantity = 5;
 
-                        echo "<div title=\"" . str_replace('"', '&quot;', $name) . "\" oncontextmenu=\"copy('" . str_replace("'", "\\'", str_replace('"', '&quot;', $name)) . "'); return false;\" class=\"piece pieceSet$id furnishing$pieceId\" onclick=\"updatePrompt('$pieceId', '$pieceIconRoute', '" . str_replace("'", "\\'", str_replace('"', '&quot;', $name)) . "')\" 
-                            data-pieceid=\"$pieceId\" data-quantity=\"$quantity\" data-icon=\"$pieceIconRoute\" data-piecename=\"" . str_replace('"', '&quot;', $name) . "\">
+                        echo "<div title=\"" . str_replace('"', '&quot;', $name) . "\" 
+                                oncontextmenu=\"copy('" . str_replace("'", "\\'", str_replace('"', '&quot;', $name)) . "'); return false;\" 
+                                class=\"piece pieceSet$id furnishing$pieceId\" 
+                                onclick=\"updatePrompt('$pieceId', '$pieceIconRoute', '" . str_replace("'", "\\'", str_replace('"', '&quot;', $name)) . "')\" 
+                                data-pieceid=\"$pieceId\" 
+                                data-quantity=\"$quantity\" 
+                                data-icon=\"$pieceIconRoute\" 
+                                data-rank=\"$rank\"
+                                data-piecename=\"" . str_replace('"', '&quot;', $name) . "\">
                             <img class=\"checkmark\" src=\"/assets/img/check.png\">
                             <img src=\"$pieceIconRoute\" alt=\"$pieceId\">
                             <p class=\"quantity\">$quantity</p>
@@ -84,7 +104,7 @@
                     }
 
                     echo '</div>';
-
+                    
                     if (in_array('giftSet', $types)){
                         echo '<br><br><div class="chars">';
 
@@ -92,12 +112,15 @@
                         foreach ($chars as $charId => $charIconObj){
                             $charIcon = $charIconObj -> icon;
                             $charIconRoute = "https://api.ambr.top/assets/UI/$charIcon.png";
-                            echo "<div onclick=\"toggleChar('$id', '$charId')\" data-charId=\"$charId\" class=\"char$charId char charSet$id\">
+                            $charData = $characters -> data -> items -> $charId;
+                            $rank = isset($charData -> rank) ? $charData -> rank : 4;
+
+                            echo "<div onclick=\"toggleChar('$id', '$charId')\" data-charId=\"$charId\" data-rank=\"$rank\" class=\"char$charId char charSet$id\">
                                 <img class=\"checkmark\" src=\"/assets/img/check.png\">
                                 <img src=\"$charIconRoute\" alt=\"$id\">
                             </div>";
                         }
-                        echo "<script defer>window.updateSet('$id')</script></div>";
+                        echo "</div>";
                     }
 
                     echo '</div>';

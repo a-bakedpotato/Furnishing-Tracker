@@ -8,5 +8,9 @@ if (settings.hideChars){
 	}
 }
 
-const sets = document.getElementsByClassName('set');
-for (const s of sets) window.updateSet(s.dataset.setid);
+window.addEventListener('load', () => {
+	const sets = document.getElementsByClassName('furnishingset');
+	console.log(sets);
+	for (const s of sets) console.log(s.dataset.setid);
+	for (const s of sets) window.updateSet(s.dataset.setid);
+})

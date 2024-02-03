@@ -40,9 +40,10 @@ function updateFurnishings(){
 			const reqAmt = piece.dataset.quantity;
 			const iconRoute = piece.dataset.icon;
 			const name = piece.dataset.piecename;
+			const rank = piece.dataset.rank;
 
 			required[pieceId] = Math.max((required[pieceId] || 0), reqAmt - (inventory[pieceId] || 0));
-			data[pieceId] = { pieceId, iconRoute, name };
+			data[pieceId] = { pieceId, iconRoute, name, rank };
 		}
 	}
 
@@ -58,6 +59,7 @@ function updateFurnishings(){
 		piece.dataset.pieceid = id;
 		piece.dataset.icon = pieceData.iconRoute;
 		piece.dataset.piecename = pieceData.name;
+		piece.dataset.rank = pieceData.rank;
 
 		const img = document.createElement('img');
 		img.src = pieceData.iconRoute;
@@ -71,7 +73,7 @@ function updateFurnishings(){
 		div.appendChild(piece);
 	}
 	
-	async function updateMaterials(){
+	function updateMaterials(){
 		const div = document.getElementById('materials');
 		const matsData = {};
 
@@ -86,24 +88,28 @@ function updateFurnishings(){
 
 			for (const matId in recipe.input){
 				const { icon, count } = recipe.input[matId];
-				console.log(count);
-				console.log(matsData[matId]);
-				if (!matsData[matId]) matsData[matId] = { quantity: 0, icon, name: matId };
+				if (!matsData[matId]) matsData[matId] = { 
+					quantity: 0, 
+					icon, 
+					name: (window.materialNames[matId] || {}).name || matId, 
+					rank: (window.materialNames[matId] || {}).rank || 1 
+				};
 				matsData[matId].quantity += parseInt(required[id]) * parseInt(count);
-				console.log(matsData[matId].quantity);
 			}
 		}
 
 		for (const [id, value] of Object.entries(matsData)){
-			if (!value.quantity) continue;
+			value.quantity -= inventory[id] || 0;
+			if (!value.quantity || value.quantity <= 0) continue;
 			const pieceData = matsData[id];
 
 			const piece = document.createElement('div');
 			piece.classList.add('piece', 'material' + id, 'summary');
-			piece.onclick = () => updatePrompt(id, 'https://api.ambr.top/assets/UI/' + pieceData.icon + '.png', pieceData.name);
+			piece.onclick = () => updatePrompt(id, 'https://api.ambr.top/assets/UI/' + pieceData.icon + '.png', pieceData.name, true);
 			piece.dataset.pieceid = id;
 			piece.dataset.icon = 'https://api.ambr.top/assets/UI/' + pieceData.icon + '.png';
 			piece.dataset.piecename = pieceData.name;
+			piece.dataset.rank = pieceData.rank;
 
 			const img = document.createElement('img');
 			img.src = 'https://api.ambr.top/assets/UI/' + pieceData.icon + '.png';
@@ -121,8 +127,20 @@ function updateFurnishings(){
 	updateMaterials();
 }
 
+function craft(itemId, recipe, quantity){
+	const inventory = JSON.parse(localStorage.getItem('inventory') || '{}');
 
-function updatePrompt(pieceId, iconRoute, name){
+	console.log(recipe.input);
+	for (const id in recipe.input){
+		console.log(id);
+		const itemAmt = (inventory[id] || 0) - quantity * recipe.input[id].count;
+		updateInv(id, itemAmt);
+	}
+	updateInv(itemId, (inventory[itemId] || 0) + quantity);
+}
+
+
+function updatePrompt(pieceId, iconRoute, name, isMaterial = false){
 	const container = document.createElement('div')
 	container.id = 'overlayContainer';
 
@@ -150,12 +168,87 @@ function updatePrompt(pieceId, iconRoute, name){
 	input.max = 9999;
 	div.appendChild(input);
 
-	bg.onclick = () => {
+	if (!isMaterial){
+		const recipe = window.recipes[pieceId];
+		const mats = document.createElement('div');
+		mats.id = 'matsDisplay';
+		for (const id in recipe.input){
+			const div = document.createElement('div');
+
+			const img = document.createElement('img');
+			console.log(recipe.input[id].icon);
+			img.src = 'https://api.ambr.top/assets/UI/' + recipe.input[id].icon + '.png';
+			img.title = window.materialNames[id].name;
+			div.appendChild(img);
+
+			const p = document.createElement('p');
+
+			if (!inv[id] || inv[id] < recipe.input[id].count){
+				const span = document.createElement('span');
+				span.classList.add('insufficient');
+				span.innerText = (inv[id] || 0).toLocaleString();
+				p.appendChild(span);
+			} else {
+				p.innerText = inv[id];
+			}
+
+			p.innerHTML += ' / ' + recipe.input[id].count.toLocaleString();
+			div.appendChild(p);
+			mats.appendChild(div);
+		}
+		div.appendChild(mats);
+
+		const table = document.createElement('table');
+
+		const tr = document.createElement('tr');
+
+		const tdLeft = document.createElement('td');
+		tdLeft.colspan = 3;
+		tdLeft.innerText = recipe.input[204] ? 'Purchase' : 'Craft';
+		tr.appendChild(tdLeft);
+
+		const tdOne = document.createElement('td');
+		tdOne.innerText = '1';
+		tdOne.classList.add('pointer');
+		tdOne.onclick = () => {
+			craft(pieceId, recipe, 1);
+			update();
+		}
+		tr.appendChild(tdOne);
+
+		const tdTwo = document.createElement('td');
+		tdTwo.innerText = '2';
+		tdTwo.classList.add('pointer');
+		tdTwo.onclick = () => {
+			craft(pieceId, recipe, 2);
+			update();
+		}
+		tr.appendChild(tdTwo);
+
+		const tdFive = document.createElement('td');
+		tdFive.innerText = '5';
+		tdFive.classList.add('pointer');
+		tdFive.onclick = () => {
+			craft(pieceId, recipe, 5);
+			update();
+		}
+		tr.appendChild(tdFive);
+
+		table.appendChild(tr);
+		div.appendChild(table);
+	}
+
+	function update(){
 		const includesPiece = document.getElementsByClassName('furnishing' + pieceId);
-		updateInv(pieceId, input.value);
 		for (const piece of includesPiece) updateSet(piece.parentElement.parentElement.dataset.setid);
+		updateFurnishings();
 
 		container.remove();
+	}
+
+	bg.onclick = () => {
+		updateInv(pieceId, input.value);
+		update();
 	}
 
 	document.body.appendChild(container);

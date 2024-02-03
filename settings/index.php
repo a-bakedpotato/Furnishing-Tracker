@@ -6,6 +6,7 @@
     </head>
     <body>
         <noscript>This page relies on JavaScript to run. Please enable JavaScript before using this.</noscript>
+        <a href=".."><img id="home" src="/assets/img/home.png"></a>
         <input type="checkbox" name="hideChars" id="hideChars" onclick="toggleSetting('hideChars')"><label for="hideChars"></label> Hide unobtained characters<br>
         <div id="chars" class="hidden">
             <?php
