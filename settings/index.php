@@ -1,12 +1,15 @@
 <html>
     <head>
+        <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="/assets/style/index.css" type="text/css">
         <link rel="stylesheet" href="index.css" type="text/css">
+
         <script src="index.js"></script>
     </head>
     <body>
         <noscript>This page relies on JavaScript to run. Please enable JavaScript before using this.</noscript>
         <a href=".."><img id="home" src="/assets/img/home.png"></a>
+        <h2>General</h2>
         <input type="checkbox" name="hideChars" id="hideChars" onclick="toggleSetting('hideChars')"><label for="hideChars"></label> Hide unobtained characters<br>
         <div id="chars" class="hidden">
             <?php
@@ -30,5 +33,13 @@
         </div>
         <input type="checkbox" name="hideDone" id="hideDone" onclick="toggleSetting('hideDone')"><label for="hideDone"></label> Hide completed sets<br>
         <input type="checkbox" name="hideNonGift" id="hideNonGift" onclick="toggleSetting('hideNonGift')"><label for="hideNonGift"></label> Hide non-gift sets
+
+        <h2>Profile</h2>
+        Name <input type="text" id="profileName" placeholder="Profile Name" onchange="updateName()"><br>
+        Profile <select id="profileSelect">
+            <option hidden disabled selected value>-</option>
+            <option value="new">Create New Profile</option>
+        </select>
+        <!-- TODO: add delete profile btn + confirmation -->
     </body>
 </html>
