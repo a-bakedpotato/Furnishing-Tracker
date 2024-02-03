@@ -88,9 +88,9 @@
                         $pieceIcon = isset($pieceData -> icon) ? $pieceData -> icon : '';
                         $pieceIconRoute = "https://api.ambr.top/assets/UI/furniture/$pieceIcon.png";
                         $rank = isset($pieceData -> rank) ? $pieceData -> rank : 1;
-                        $quantity = 5;
+                        $quantity = isset($pieceDataPartial -> count) ? $pieceDataPartial -> count : 1;
 
-                        echo "<div title=\"" . str_replace('"', '&quot;', $name) . "\" 
+                        echo "<div title=\"" . str_replace('"', '&quot;', $pieceIcon) . "\" 
                                 oncontextmenu=\"copy('" . str_replace("'", "\\'", str_replace('"', '&quot;', $name)) . "'); return false;\" 
                                 class=\"piece pieceSet$id furnishing$pieceId\" 
                                 onclick=\"updatePrompt('$pieceId', '$pieceIconRoute', '" . str_replace("'", "\\'", str_replace('"', '&quot;', $name)) . "')\" 
