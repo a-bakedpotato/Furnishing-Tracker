@@ -21,9 +21,10 @@
 
                     $name = $char -> name;
                     $charIcon = $char -> icon;
+                    $rank = $char -> rank;
                     $charIconRoute = "https://api.ambr.top/assets/UI/$charIcon.png";
 
-                    echo "<div onclick=\"toggleChar('$id')\" data-charId=\"$id\" id=\"char$id\" class=\"char$id char\">
+                    echo "<div onclick=\"toggleChar('$id')\" data-rank=\"$rank\" data-charId=\"$id\" id=\"char$id\" class=\"char$id char\">
                         <img src=\"$charIconRoute\" alt=\"$id\">
                     </div>";
                 }
