@@ -5,6 +5,8 @@
 
         <script src="assets/scripts/index.js"></script>
         <script src="assets/scripts/settings.js" defer></script>
+
+        <title>Furnishing Set Tracker</title>
     </head>
     <body>
         <noscript>This page relies on JavaScript to run. Please enable JavaScript before using this.</noscript>
@@ -19,7 +21,11 @@
 
                 $materialNames = array();
                 foreach ($materials -> data -> items as $id => $matData){
-                    $materialNames[$id] = array('name' => $matData -> name, 'rank' => $matData -> rank);
+                    $name = $matData -> name;
+                    $rank = $matData -> rank;
+                    $hasMap = file_exists("assets/img/map/$id");
+
+                    $materialNames[$id] = array('name' => $name, 'rank' => $rank, 'hasMap' => $hasMap);
                 }
 
                 echo "<script>window.materialNames = " . json_encode($materialNames) . "</script>";
@@ -89,15 +95,19 @@
                         $rank = isset($pieceData -> rank) ? $pieceData -> rank : 1;
                         $quantity = isset($pieceDataPartial -> count) ? $pieceDataPartial -> count : 1;
 
-                        echo "<div title=\"" . str_replace('"', '&quot;', $pieceIcon) . "\" 
+                        $mapExists = file_exists("assets/img/map/$pieceId");
+                        $mapData = $mapExists ? "data-hasmap=\"true\"" : "";
+                        #echo $mapExists ? 'true' : 'false';
+
+                        echo "<div title=\"" . str_replace('"', '&quot;', $name) . "\" 
                                 oncontextmenu=\"copy('" . str_replace("'", "\\'", str_replace('"', '&quot;', $name)) . "'); return false;\" 
                                 class=\"piece pieceSet$id furnishing$pieceId\" 
-                                onclick=\"updatePrompt('$pieceId', '$pieceIconRoute', '" . str_replace("'", "\\'", str_replace('"', '&quot;', $name)) . "')\" 
+                                onclick=\"updatePrompt('$pieceId', '$pieceIconRoute', '" . str_replace("'", "\\'", str_replace('"', '&quot;', $name)) . "', " . ($mapExists ? 'true' : 'false') . ")\" 
                                 data-pieceid=\"$pieceId\" 
                                 data-quantity=\"$quantity\" 
                                 data-icon=\"$pieceIconRoute\" 
                                 data-rank=\"$rank\"
-                                data-piecename=\"" . str_replace('"', '&quot;', $name) . "\">
+                                data-piecename=\"" . str_replace('"', '&quot;', $name) . "\" $mapData>
                             <img class=\"checkmark\" src=\"/assets/img/check.png\">
                             <img src=\"$pieceIconRoute\" alt=\"$pieceId\">
                             <p class=\"quantity\">$quantity</p>

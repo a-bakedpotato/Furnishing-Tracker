@@ -5,6 +5,8 @@
         <link rel="stylesheet" href="index.css" type="text/css">
 
         <script src="index.js"></script>
+
+        <title>Furnishing Set Tracker Settings</title>
     </head>
     <body>
         <noscript>This page relies on JavaScript to run. Please enable JavaScript before using this.</noscript>

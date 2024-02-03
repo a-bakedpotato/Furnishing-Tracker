@@ -37,7 +37,7 @@ a {
     bottom: 0;
 }
 
-.char > img, .piece > img {
+.char > img:not(.checkmark), .piece > img:not(.checkmark) {
     max-height: 50px;
     max-width: 50px;
     background-color: #666666;
@@ -169,6 +169,14 @@ div:not(.check) > img.checkmark {
 #overlayContainer > #input > img {
     max-width: 15%;
     right: 2px;
+    position: absolute;
+    align-self: flex-start;
+}
+
+#overlayContainer > #input > a {
+    max-width: 10%;
+    left: 10px;
+    top: 5px;
     position: absolute;
     align-self: flex-start;
 }

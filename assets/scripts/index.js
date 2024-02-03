@@ -41,9 +41,10 @@ function updateFurnishings(){
 			const iconRoute = piece.dataset.icon;
 			const name = piece.dataset.piecename;
 			const rank = piece.dataset.rank;
+			const hasMap = piece.dataset.hasmap || false;
 
 			required[pieceId] = Math.max((required[pieceId] || 0), reqAmt - (inventory[pieceId] || 0));
-			data[pieceId] = { pieceId, iconRoute, name, rank };
+			data[pieceId] = { pieceId, iconRoute, name, rank, hasMap };
 		}
 	}
 
@@ -55,7 +56,7 @@ function updateFurnishings(){
 		piece.title = pieceData.name.replace(/"/g, '&quot;');
 		piece.oncontextmenu = () => { copy(pieceData.name); return false; }
 		piece.classList.add('piece', 'furnishing' + id, 'summary');
-		piece.onclick = () => updatePrompt(id, pieceData.iconRoute, pieceData.name);
+		piece.onclick = () => updatePrompt(id, pieceData.iconRoute, pieceData.name, pieceData.hasMap);
 		piece.dataset.pieceid = id;
 		piece.dataset.icon = pieceData.iconRoute;
 		piece.dataset.piecename = pieceData.name;
@@ -105,7 +106,7 @@ function updateFurnishings(){
 
 			const piece = document.createElement('div');
 			piece.classList.add('piece', 'material' + id, 'summary');
-			piece.onclick = () => updatePrompt(id, 'https://api.ambr.top/assets/UI/' + pieceData.icon + '.png', pieceData.name, true);
+			piece.onclick = () => updatePrompt(id, 'https://api.ambr.top/assets/UI/' + pieceData.icon + '.png', pieceData.name, pieceData.hasMap, true);
 			piece.dataset.pieceid = id;
 			piece.dataset.icon = 'https://api.ambr.top/assets/UI/' + pieceData.icon + '.png';
 			piece.dataset.piecename = pieceData.name;
@@ -138,7 +139,7 @@ function craft(itemId, recipe, quantity){
 }
 
 
-function updatePrompt(pieceId, iconRoute, name, isMaterial = false){
+function updatePrompt(pieceId, iconRoute, name, hasMap = false, isMaterial = false){
 	const container = document.createElement('div')
 	container.id = 'overlayContainer';
 
@@ -157,6 +158,17 @@ function updatePrompt(pieceId, iconRoute, name, isMaterial = false){
 	const img = document.createElement('img');
 	img.src = iconRoute;
 	div.appendChild(img);
+
+	if (hasMap){
+		const mapA = document.createElement('a');
+		mapA.href = 'map/?id=' + pieceId;
+		
+		const mapImg = document.createElement('img');
+		mapImg.src = 'assets/img/map.png';
+		mapA.appendChild(mapImg);
+		
+		div.appendChild(mapA);
+	}
 
 	const inv = JSON.parse(localStorage.getItem('inventory') || '{}');
 	const input = document.createElement('input');

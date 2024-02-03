@@ -1,0 +1,19 @@
+#maps {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 5%;
+    padding-right: 5%;
+    justify-content: center;
+    width: 90%;
+}
+
+.map {
+    align-self: center;
+    width: 30%;
+    max-height: 30vh;
+    object-fit: contain;
+}
+
+body {
+    user-select: none;
+}
