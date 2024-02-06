@@ -97,7 +97,6 @@
 
                         $mapExists = file_exists("assets/img/map/$pieceId");
                         $mapData = $mapExists ? "data-hasmap=\"true\"" : "";
-                        #echo $mapExists ? 'true' : 'false';
 
                         echo "<div title=\"" . str_replace('"', '&quot;', $name) . "\" 
                                 oncontextmenu=\"copy('" . str_replace("'", "\\'", str_replace('"', '&quot;', $name)) . "'); return false;\" 

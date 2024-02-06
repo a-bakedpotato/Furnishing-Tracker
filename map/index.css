@@ -9,7 +9,6 @@
 
 .map {
     align-self: center;
-    width: 30%;
     max-height: 30vh;
     object-fit: contain;
 }
