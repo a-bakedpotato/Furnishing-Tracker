@@ -7,9 +7,22 @@
         <script src="assets/scripts/settings.js" defer></script>
 
         <title>Furnishing Set Tracker</title>
+
+        <meta content="Genshin Furnishing Set Tracker" property="og:title">
+        <meta content="A Furnishing Set tracker for Genshin Impact's Teapot" property="og:description">
+        <meta content="http://giteapot.unaux.com" property="og:url">
     </head>
     <body>
         <noscript>This page relies on JavaScript to run. Please enable JavaScript before using this.</noscript>
+		<!-- idk if i wanna add this part -->
+        <!--<div id="bar">
+            <a href="#top">Top</a>
+            <a href="#sets">Furnishing Sets</a>
+            <a href="#furnishings">Furnishings</a>
+            <a href="#materials">Materials</a>
+        </div>
+
+        <div id="top"></div>-->
         <h2>Furnishing Sets</h2>
 
         <a href="settings"><img id="settings" src="/assets/img/cog.png"></a>

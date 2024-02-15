@@ -45,14 +45,15 @@
         </select>
         <!-- TODO: add delete profile btn + confirmation -->
 		
-		<h2>Credits</h2>
+		<!--<h2>Credits</h2>
 		<p>
 			Developer: a.bakedpotato<br>
-			<!-- Contributors: ... -->
+			<!-- Contributors: ... --><!--
 			Beta Testers: daydreamlai, drxgonfly, pekicaa, tomfront, tylertm<br>
 			Checkmark Image: daydreamlai<br>
 			Genshin Data + Assets: <a href="https://ambr.top">ambr.top</a><br>
 			Design Inspiration: <a href="https://genshin-center.com">Genshin Center</a>, <a href="https://paimon.moe">paimon.moe</a>
-		</p>
+			Maps: <a href="https://genshin-impact.fandom.com">Genshin Impact Wiki</a>
+		</p>-->
     </body>
 </html>

@@ -65,11 +65,6 @@ a {
     transform: translateX(2px);
 }
 
-.piece {
-    margin-left: 1px;
-    margin-right: 1px;
-}
-
 #furnishings, #materials {
     width: 90%;
     margin: auto;
@@ -83,8 +78,11 @@ a {
 }
 
 .piece {
+    margin-left: 1px;
+    margin-right: 1px;
     display: flex;
-    padding-left: 2%;
+    padding-left: 1%;
+    padding-right: 1%;
     padding-bottom: 2%;
 }
 
@@ -158,7 +156,7 @@ div:not(.check) > img.checkmark {
 
 #overlayContainer > #input > h2 {
     margin-top: 2%;
-    user-select: none;
+    /*user-select: none;*/ /* let it be copyable until i get ssl cert */
     left: 15%;
     width: 70%;
     text-align: center;
@@ -219,6 +217,7 @@ div:not(.check) > img.checkmark {
     transition: 0.2s;
     filter: drop-shadow(4px 4px #252525);
     user-select: none;
+    z-index: 7;
 }
 
 #settings:hover {
@@ -336,4 +335,35 @@ input[type="text"], select {
     border-radius: 5%;
     border: none;
     outline: none;
+}
+
+#bar > a {
+    color: #FFFFFF;
+    text-decoration: none;
+    margin: 1%;
+    background-color: #222222;
+    border-radius: 5px;
+    padding: 5px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    margin-top: 8px;
+    margin-bottom: 2px;
+}
+
+#bar {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    left: 5%;
+    top: -5px;
+    margin-top: 0;
+    z-index: 6;
+    background-color: #333333;
+    border-radius: 5px;
+    border: 5px solid rgba(0, 0, 0, 0.4);
+    border-top: none;
+}
+
+#top {
+    padding-bottom: 1.2%;
 }
