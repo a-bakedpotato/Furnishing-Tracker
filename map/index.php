@@ -23,7 +23,7 @@
 				$name = $data -> name;
 				$rank = $data -> rank;
 			}
-			if (isset($name)) echo "<title>$name</title><meta content=\"$name\" property=\"og:title\">";
+			if (isset($name)) echo "<title>$name</title><meta content=\"" . str_replace('"', '&quot;', $name) . "\" property=\"og:title\">";
 			if (isset($rank)){ 
 				switch($rank){
 					case '5':
